@@ -1,14 +1,17 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 
 
 ###############################################################################
 # User Defined Parameters
-filename = 'senior_design_mesh.imsht'
-xints = 60
-yints = 60
-zints = 20
+height_index = 10
+
+###############################################################################
+# Problem Defined Parameters
+filename = 'meshtal'
+xints = 120
+yints = 120
+zints = 40
 ###############################################################################
 
 
@@ -22,43 +25,22 @@ y = data[2]
 z = data[3]
 d = data[7]
 
+xpoints = np.sort(np.array(list(set(x))))
+
 max_dose = max(d)
 
 data_vert = np.array([x, y, z, d])
 data_vert = data_vert.T
 data = data_vert.reshape(xints, yints, zints, -1)
 
+cross = data[:, :, height_index, -1]
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-###############################################################################
-# 3d plotting
-
-if False:
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
-    for point in data_vert[:2000]:
-        xp, yp, zp, dp = point
-        print('>> Plotting {}, {}, {}'.format(xp, yp, zp), end='\r', flush=True)
-        ax.scatter(xp, yp, zp, color='k', depthshade=False, alpha=dp/max_dose)
-    plt.show()
+# linear plot
+fig = plt.figure(1)
+ax = fig.add_subplot(111)
+dose_x = cross[int(xints/2)]
+ax.plot(xpoints, dose_x, 'k')
+ax.set_yscale('log')
+ax.set_xlabel('Position (cm)')
+ax.set_ylabel('Dose (mr/hr)')
+ax.set_title('Dose {} cm from floor'.format(z[height_index] + 70))
