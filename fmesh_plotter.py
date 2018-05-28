@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 ###############################################################################
 # User Defined Parameters
-height_index = 10
+height_index = 8
 
 ###############################################################################
 # Problem Defined Parameters
